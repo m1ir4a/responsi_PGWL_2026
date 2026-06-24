@@ -11,8 +11,11 @@ use Illuminate\Support\Facades\Route;
    // return view('welcome');
 //})->name('home');
 
-Route::get('/', [PageController::class, 'landingpage'])->name('home');
+// Landing (kalau mau dashboard sebagai utama)
+Route::get('/', [PageController::class, 'dashboard'])->name('home');
 
+// Dashboard (halaman utama GIS)
+Route::get('/dashboard', [PageController::class, 'dashboard'])->name('dashboard');
 Route::middleware(['auth'])->group(function () {
     Route::get('/peta', [PageController::class, 'peta'])->name('peta');
 });
@@ -26,11 +29,15 @@ Route::get('/geojson-kecamatan', [PageController::class, 'geojsonKecamatan'])
 )->name('geojson.kecamatan.tahun');
 
 /* EDIT */
-Route::get('/map-edit-pertanian/{nama}', [PertanianController::class, 'edit'])
-    ->name('pertanian.edit');
+Route::get(
+    '/map-edit-pertanian/{tahun}/{kecamatan}',
+    [PertanianController::class, 'edit']
+)->name('pertanian.edit');
 
-Route::post('/map-edit-pertanian/{nama}', [PertanianController::class, 'update'])
-    ->name('pertanian.update');
+Route::post(
+    '/map-edit-pertanian/{tahun}/{kecamatan}',
+    [PertanianController::class, 'update']
+)->name('pertanian.update');
 
 /* CREATE */
 Route::get('/pertanian/create/{kecamatan}', [PertanianCreateController::class, 'create'])
@@ -68,15 +75,15 @@ Route::get('/api/pertanian-data', [PageController::class, 'pertanianData']);
 
 Route::middleware(['auth'])->group(function () {
 
-    // Dashboard
-    Route::get('/dashboard', [PageController::class, 'dashboard'])->name('dashboard');
+    // // Dashboard
+    // Route::get('/dashboard', [PageController::class, 'dashboard'])->name('dashboard');
 
-    // EDIT
-    Route::get('/map-edit-pertanian/{nama}',  [PertanianController::class, 'edit'])
-        ->name('pertanian.edit');
+    // // EDIT
+    // Route::get('/map-edit-pertanian/{nama}',  [PertanianController::class, 'edit'])
+    //     ->name('pertanian.edit');
 
-    Route::post('/map-edit-pertanian/{nama}', [PertanianController::class, 'update'])
-        ->name('pertanian.update');
+    // Route::post('/map-edit-pertanian/{nama}', [PertanianController::class, 'update'])
+    //     ->name('pertanian.update');
 
     // CREATE
     Route::get('/pertanian/create/{kecamatan}', [PertanianCreateController::class, 'create'])
@@ -128,6 +135,8 @@ Route::delete(
     '/lahan-pertanian/{id}',
     [LahanPertanianController::class,'destroy']
 )->name('lahan.destroy');
+
+// Route::get('/geojson-kecamatan-tahun/{tahun}', [PageController::class, 'geojsonKecamatanTahun']);
 
 
 

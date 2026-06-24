@@ -1,12 +1,146 @@
 @extends('layouts.template')
 
+@section('styles')
+
+<style>
+    .modal-content {
+    border: none;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 12px 35px rgba(0,0,0,0.25);
+}
+
+/* HEADER */
+.modal-header {
+    background: linear-gradient(135deg, #2E7D32, #43A047);
+    color: white;
+    border-bottom: none;
+    padding: 16px 20px;
+}
+
+.modal-title {
+    font-weight: 700;
+    font-size: 16px;
+}
+
+/* BODY */
+.modal-body {
+    background: #f7faf7;
+    padding: 20px;
+}
+
+/* LABEL */
+.modal-body .form-label {
+    font-weight: 600;
+    font-size: 13px;
+    color: #2E7D32;
+    margin-top: 6px;
+}
+
+/* INPUT */
+.modal-body .form-control {
+    border-radius: 10px;
+    border: 1px solid #d8e6da;
+    padding: 8px 10px;
+    font-size: 14px;
+}
+
+.modal-body .form-control:focus {
+    border-color: #43A047;
+    box-shadow: 0 0 0 0.2rem rgba(67,160,71,.15);
+}
+
+/* SECTION TITLE (PADI / JAGUNG / KEDELAI) */
+.modal-body h5 {
+    margin-top: 18px;
+    margin-bottom: 10px;
+    font-weight: 700;
+    color: #2E7D32;
+    border-left: 4px solid #43A047;
+    padding-left: 8px;
+}
+
+/* FOOTER */
+.modal-footer {
+    border-top: none;
+    background: #fff;
+    padding: 15px 20px;
+}
+
+/* BUTTON SAVE */
+.btn-success {
+    background: #2E7D32;
+    border: none;
+    border-radius: 10px;
+    padding: 8px 16px;
+}
+
+.btn-success:hover {
+    background: #256428;
+}
+
+/* BUTTON CANCEL */
+.btn-secondary {
+    border-radius: 10px;
+}
+
+/* MODAL ANIMATION */
+.modal.fade .modal-dialog {
+    transform: translateY(-20px);
+    transition: all 0.25s ease;
+}
+
+.modal.show .modal-dialog {
+    transform: translateY(0);
+}
+
+/* 🔥 UKURAN MODAL LEBIH KECIL */
+.modal-dialog {
+    max-width: 520px;   /* sebelumnya lg = terlalu besar */
+}
+
+/* 🔥 SUPAYA TIDAK KETUTUP NAVBAR */
+.modal {
+    z-index: 2000 !important;
+}
+
+.modal-backdrop {
+    z-index: 1990 !important;
+}
+
+/* kalau navbar kamu fixed-top Bootstrap */
+.navbar {
+    z-index: 3000;
+    position: relative;
+}
+
+/* 🔥 BIAR MODAL TIDAK KEPANJANG */
+.modal-body {
+    max-height: 65vh;
+    overflow-y: auto;
+}
+
+/* 🔥 padding lebih ringkas */
+.modal-body {
+    padding: 15px;
+}
+
+/* input lebih compact */
+.modal-body .form-control {
+    padding: 6px 10px;
+    font-size: 13px;
+}
+</style>
+
+@endsection
+
 @section('content')
 
 <div id="map" style="height:100vh;"></div>
 
 <!-- MODAL CREATE -->
 <div class="modal fade" id="createModal" tabindex="-1">
-    <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
 
             <form method="POST" action="{{ route('pertanian.store') }}">

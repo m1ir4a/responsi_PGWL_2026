@@ -162,12 +162,13 @@
 
         /* ── ALERT TOAST ── */
         .pgwl-alert {
-            position: fixed;
-            top: calc(var(--navbar-h) + 12px);
-            right: 16px;
-            z-index: 10000;
-            min-width: 280px;
-            max-width: 400px;
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 10000;
+    min-width: 280px;
+    max-width: 400px;
+
         }
     </style>
 
@@ -179,7 +180,7 @@
 <nav class="pgwl-navbar">
     <a class="pgwl-brand" href="{{ route('home') }}">
         <span class="brand-icon"><i class="fa-solid fa-seedling"></i></span>
-        PGWL Grobogan
+        {{ $title ?? 'Grobogan AgroMap' }}
     </a>
 
     <div class="pgwl-nav">

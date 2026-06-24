@@ -98,6 +98,183 @@
         #modalLahan .modal-dialog {
             margin-top: 80px;
         }
+
+        /* POPUP LEAFLET */
+
+        .leaflet-popup-content-wrapper {
+            border-radius: 14px;
+            padding: 0;
+            overflow: hidden;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, .18);
+        }
+
+        .leaflet-popup-content {
+            margin: 0;
+            min-width: 260px;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .popup-header {
+            background: linear-gradient(135deg, #2e7d32, #43a047);
+            color: #fff;
+            padding: 12px 15px;
+        }
+
+        .popup-header h6 {
+            margin: 0;
+            font-size: 15px;
+            font-weight: 700;
+        }
+
+        .popup-body {
+            padding: 12px 15px;
+        }
+
+        .popup-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 8px;
+            margin-bottom: 8px;
+            font-size: 13px;
+        }
+
+        .popup-item i {
+            color: #2e7d32;
+            width: 16px;
+            margin-top: 2px;
+        }
+
+        .popup-img {
+            width: 100%;
+            border-radius: 10px;
+            margin-top: 10px;
+            border: 1px solid #ddd;
+        }
+
+        .popup-actions {
+            display: flex;
+            gap: 8px;
+            margin-top: 12px;
+        }
+
+        .popup-actions .btn {
+            flex: 1;
+        }
+
+        /* MODAL LAHAN */
+
+        #modalLahan .modal-dialog {
+            max-width: 550px;
+        }
+
+        #modalLahan .modal-content {
+            border: none;
+            border-radius: 18px;
+            overflow: hidden;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, .2);
+        }
+
+        #modalLahan .modal-header {
+            background: linear-gradient(135deg, #2E7D32, #43A047);
+            color: white;
+            border: none;
+            padding: 18px 22px;
+        }
+
+        #modalLahan .modal-header h5 {
+            margin: 0;
+            font-weight: 700;
+        }
+
+        #modalLahan .modal-body {
+            padding: 22px;
+            background: #fafafa;
+        }
+
+        #modalLahan .input-group-text {
+            background: #f1f8f2;
+            color: #2E7D32;
+            border-color: #d8e8da;
+        }
+
+        #modalLahan .form-control {
+            border-radius: 0 10px 10px 0;
+        }
+
+        #modalLahan .form-control:focus {
+            border-color: #43A047;
+            box-shadow: 0 0 0 .15rem rgba(67, 160, 71, .15);
+        }
+
+        #modalLahan .modal-footer {
+            border: none;
+            padding: 18px 22px;
+        }
+
+        #modalLahan .btn-success {
+            background: #2E7D32;
+            border: none;
+        }
+
+        #modalLahan .btn-success:hover {
+            background: #256428;
+        }
+
+        #preview-image {
+            box-shadow: 0 4px 12px rgba(0, 0, 0, .12);
+        }
+
+        .popup-header{
+    background:linear-gradient(135deg,#2E7D32,#43A047);
+    color:white;
+    padding:12px 15px;
+}
+
+.popup-header h6{
+    margin:0;
+    font-size:15px;
+    font-weight:700;
+}
+
+.popup-body{
+    padding:12px 15px;
+}
+
+.popup-item{
+    display:flex;
+    gap:8px;
+    margin-bottom:10px;
+    font-size:13px;
+}
+
+.popup-item i{
+    color:#2E7D32;
+    width:18px;
+    margin-top:3px;
+}
+
+.popup-actions{
+    display:flex;
+    gap:8px;
+    margin-top:12px;
+}
+
+.popup-actions .btn{
+    flex:1;
+    border-radius:8px;
+}
+
+.leaflet-popup-content-wrapper{
+    border-radius:14px;
+    overflow:hidden;
+    box-shadow:0 8px 25px rgba(0,0,0,.18);
+}
+
+.leaflet-popup-content{
+    margin:0;
+    min-width:280px;
+}
+
     </style>
 @endsection
 
@@ -106,55 +283,88 @@
 
     <div class="modal fade" id="modalLahan" tabindex="-1">
 
-        <div class="modal-dialog">
+        <div class="modal-dialog modal-dialog-centered">
 
             <div class="modal-content">
 
                 <div class="modal-header">
-                    <h5>Tambah Lahan Pertanian</h5>
+                    <h5>
+                        <i class="fa-solid fa-seedling me-2"></i>
+                        Tambah Lahan Pertanian
+                    </h5>
+
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                        onclick="batalDigitasi()">
+                    </button>
                 </div>
 
                 <div class="modal-body">
 
-                    <input class="form-control mb-2" id="nama_pemilik" placeholder="Nama Pemilik">
+                    <div class="input-group mb-3">
+                        <span class="input-group-text">
+                            <i class="fa-solid fa-user"></i>
+                        </span>
+                        <input class="form-control" id="nama_pemilik" placeholder="Nama Pemilik">
+                    </div>
 
+                    <div class="input-group mb-3">
+                        <span class="input-group-text">
+                            <i class="fa-solid fa-location-dot"></i>
+                        </span>
+                        <input class="form-control" id="kecamatan" placeholder="Kecamatan">
+                    </div>
 
+                    <div class="input-group mb-3">
+                        <span class="input-group-text">
+                            <i class="fa-solid fa-seedling"></i>
+                        </span>
+                        <input class="form-control" id="komoditas" placeholder="Komoditas">
+                    </div>
 
-                    <input class="form-control mb-2" id="kecamatan" placeholder="Kecamatan">
+                    <div class="input-group mb-3">
+                        <span class="input-group-text">
+                            <i class="fa-solid fa-ruler-combined"></i>
+                        </span>
+                        <input class="form-control" id="luas_lahan" placeholder="Luas Lahan (Ha)">
+                    </div>
 
-                    <input class="form-control mb-2" id="komoditas" placeholder="Komoditas">
+                    <label class="form-label fw-semibold">
+                        <i class="fa-solid fa-image"></i>
+                        Foto Lahan
+                    </label>
 
-                    <input class="form-control mb-2" id="luas_lahan" placeholder="Luas Lahan">
+                    <input type="file" id="image" class="form-control" onchange="previewImage(event)">
 
-                    <input
-    type="file"
-    id="image"
-    class="form-control"
-    onchange="previewImage(event)">
+                    <div class="mt-3 text-center">
 
-<div class="mt-3 text-center">
-    <img
-        id="preview-image"
-        src=""
-        style="
-            display:none;
-            max-width:100%;
-            max-height:200px;
-            border-radius:8px;
-            border:1px solid #ddd;
-        ">
-</div>
+                        <img id="preview-image" src=""
+                            style="
+                            display:none;
+                            width:100%;
+                            max-height:250px;
+                            object-fit:cover;
+                            border-radius:12px;
+                            border:1px solid #ddd;
+                        ">
+
+                    </div>
 
                 </div>
 
                 <div class="modal-footer">
 
-                    <button type="button" class="btn btn-secondary" onclick="batalDigitasi()">
-                        ❌ Cancel
+                    <button type="button" class="btn btn-outline-secondary" onclick="batalDigitasi()">
+
+                        <i class="fa-solid fa-xmark"></i>
+                        Batal
+
                     </button>
 
                     <button type="button" class="btn btn-success" onclick="simpanLahan()">
-                        💾 Simpan
+
+                        <i class="fa-solid fa-floppy-disk"></i>
+                        Simpan Data
+
                     </button>
 
                 </div>
@@ -170,6 +380,7 @@
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.4/leaflet.draw.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <script>
         /*  MAP INIT */
@@ -194,110 +405,122 @@
         var drawnItems = new L.FeatureGroup();
         map.addLayer(drawnItems);
 
-        var lahanPertanianLayer = L.geoJSON(null,{
+        var lahanPertanianLayer = L.geoJSON(null, {
 
-    style:{
-        color:"#ff0000",
-        weight:2,
-        fillOpacity:0.4
-    },
+            style: {
+                color: "#ff0000",
+                weight: 2,
+                fillOpacity: 0.4
+            },
 
-    onEachFeature:function(feature, layer){
+            onEachFeature: function(feature, layer) {
 
 
-        let img = '';
+                let img = '';
 
-        if(feature.properties.image){
+                if (feature.properties.image) {
 
-            img = `
+                    img = `
                 <img
                     src="/storage/images/${feature.properties.image}"
                     width="220"
                     class="img-fluid rounded mt-2">
             `;
-        }
-
-        layer.bindPopup(`
-
-            <h6>
-                🌾 ${feature.properties.nama_pemilik}
-            </h6>
-
-            <hr>
-
-            <b>Kecamatan :</b>
-            ${feature.properties.kecamatan}
-
-            <br>
-
-            <b>Komoditas :</b>
-            ${feature.properties.komoditas}
-
-            <br>
-
-            <b>Luas :</b>
-            ${feature.properties.luas_lahan} Ha
-
-            <br>
-
-            ${img}
-
-            <hr>
-
-            <a
-                href="/map-edit-lahan/${feature.properties.id}"
-                class="btn btn-warning btn-sm">
-                ✏️ Edit
-            </a>
-
-            <button
-                class="btn btn-danger btn-sm"
-                onclick="hapusLahan(${feature.properties.id})">
-                🗑️ Hapus
-            </button>
-
-        `);
-
-        layer.bindTooltip(feature.properties.kecamatan, {
-    sticky: true,
-    direction: "top",
-    className: "my-tooltip"
-});
-
-    }
+                }
 
 
 
-}).addTo(map);
+                layer.bindPopup(`
+
+<div class="popup-header">
+    <h6>Lahan Pertanian</h6>
+</div>
+
+<div class="popup-body">
+
+    <div class="popup-item">
+        <i class="fa-solid fa-user"></i>
+        <span><b>Nama Pemilik:</b> ${feature.properties.nama_pemilik}</span>
+    </div>
+
+    <div class="popup-item">
+        <i class="fa-solid fa-location-dot"></i>
+        <span><b>Kecamatan:</b> ${feature.properties.kecamatan}</span>
+    </div>
+
+    <div class="popup-item">
+        <i class="fa-solid fa-seedling"></i>
+        <span><b>Komoditas:</b> ${feature.properties.komoditas}</span>
+    </div>
+
+    <div class="popup-item">
+        <i class="fa-solid fa-ruler-combined"></i>
+        <span><b>Luas:</b> ${feature.properties.luas_lahan} Ha</span>
+    </div>
+
+    ${img}
+
+    <div class="popup-actions">
+
+        <a href="/map-edit-lahan/${feature.properties.id}"
+           class="btn btn-warning btn-sm">
+            <i class="fa fa-pen"></i>
+            Edit
+        </a>
+
+        <button
+            class="btn btn-danger btn-sm"
+            onclick="hapusLahan(${feature.properties.id})">
+
+            <i class="fa fa-trash"></i>
+            Hapus
+
+        </button>
+
+    </div>
+
+</div>
+`);
+
+                layer.bindTooltip(feature.properties.kecamatan, {
+                    sticky: true,
+                    direction: "top",
+                    className: "my-tooltip"
+                });
+
+            }
+
+
+
+        }).addTo(map);
 
         var batasAdminLahan = L.geoJSON(null, {
-    style: {
-        color: "#2E7D32",
-        weight: 1.5,
-        fillOpacity: 0.1
-    },
+            style: {
+                color: "#2E7D32",
+                weight: 1.5,
+                fillOpacity: 0.1
+            },
 
-    onEachFeature: function(feature, layer) {
+            onEachFeature: function(feature, layer) {
 
-        // TOOLTIP kecamatan
-        layer.bindTooltip(
-            feature.properties.kecamatan,
-            {
-                sticky: true,
-                direction: "center",
-                className: "my-tooltip"
+                // TOOLTIP kecamatan
+                layer.bindTooltip(
+                    feature.properties.kecamatan, {
+                        sticky: true,
+                        direction: "center",
+                        className: "my-tooltip"
+                    }
+                );
             }
-        );
-    }
-});
+        });
 
-$.getJSON("{{ route('geojson.kecamatan') }}", function (data) {
+        $.getJSON("{{ route('geojson.kecamatan') }}", function(data) {
 
-    batasAdminLahan.addData(data);
+            batasAdminLahan.addData(data);
 
-    // langsung tambahkan ke map / group layer
-    lahanPertanianLayer.addLayer(batasAdminLahan);
-});
+            // langsung tambahkan ke map / group layer
+            lahanPertanianLayer.addLayer(batasAdminLahan);
+        });
 
         var osm = L.tileLayer(
             "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
@@ -398,7 +621,10 @@ $.getJSON("{{ route('geojson.kecamatan') }}", function (data) {
                     "<br>Produksi: " + feature.properties.kedelai_produksi +
                     "<br>Produktivitas: " + feature.properties.kedelai_produktivitas + "<hr>" +
 
-                    "<br><a href='/map-edit-pertanian/" + encodeURIComponent(feature.properties.kecamatan) +
+                    "<br><a href='/map-edit-pertanian/" +
+                    feature.properties.tahun +
+                    "/" +
+                    encodeURIComponent(feature.properties.kecamatan) +
                     "' " +
                     "style='display:inline-block;margin-top:5px;padding:6px 8px;background:#ff9800;color:#fff;border-radius:5px;text-decoration:none'>" +
                     "<i class='fa fa-edit'></i> Edit Data</a>" +
@@ -408,16 +634,15 @@ $.getJSON("{{ route('geojson.kecamatan') }}", function (data) {
                     "<a href='/pertanian/create/" +
                     encodeURIComponent(feature.properties.kecamatan) +
                     "' style='display:inline-block;padding:6px 8px;background:#28a745;color:#fff;border-radius:5px;text-decoration:none'>" +
-                    "➕ Create Tahun Baru</a>"
-                     +
+                    "➕ Create Tahun Baru</a>" +
 
-        "<hr>" +
+                    "<hr>" +
 
-        // 🔥 TOMBOL DELETE BARU
-        "<button onclick=\"hapusKecamatan('" +
-        feature.properties.kecamatan +
-        "')\" style='background:#e74c3c;color:#fff;border:none;padding:6px 10px;border-radius:5px;cursor:pointer'>" +
-        "🗑️ Hapus Kecamatan</button>"
+                    // 🔥 TOMBOL DELETE BARU
+                    "<button onclick=\"hapusKecamatan('" +
+                    feature.properties.kecamatan +
+                    "')\" style='background:#e74c3c;color:#fff;border:none;padding:6px 10px;border-radius:5px;cursor:pointer'>" +
+                    "🗑️ Hapus Kecamatan</button>"
                 );
                 layer.bindTooltip(feature.properties.kecamatan, {
                     sticky: true,
@@ -579,53 +804,89 @@ $.getJSON("{{ route('geojson.kecamatan') }}", function (data) {
         function popupPertanian(feature) {
 
             return `
-        <b>Kecamatan:</b> ${feature.properties.kecamatan}
-        <hr>
 
-        <b>Tahun:</b> ${feature.properties.tahun}
+<div class="popup-header">
+    <h6>
+        <i class="fa-solid fa-wheat-awn"></i>
+        ${feature.properties.kecamatan}
+    </h6>
+</div>
 
-        <hr>
+<div class="popup-body">
 
-        <b>🌾 Padi</b><br>
-        Luas Panen : ${feature.properties.padi_luas_panen}<br>
-        Produksi : ${feature.properties.padi_produksi}<br>
-        Produktivitas : ${feature.properties.padi_produktivitas}
+    <div class="popup-item">
+        <i class="fa-solid fa-calendar"></i>
+        <span><b>Tahun:</b> ${feature.properties.tahun}</span>
+    </div>
 
-        <hr>
+    <hr>
 
-        <b>🌽 Jagung</b><br>
-        Luas Panen : ${feature.properties.jagung_luas_panen}<br>
-        Produksi : ${feature.properties.jagung_produksi}<br>
-        Produktivitas : ${feature.properties.jagung_produktivitas}
+    <div class="popup-item">
+        <i class="fa-solid fa-seedling"></i>
+        <span>
+            <b>Padi</b><br>
+            Luas Panen : ${feature.properties.padi_luas_panen} Ha<br>
+            Produksi : ${feature.properties.padi_produksi} Ton<br>
+            Produktivitas : ${feature.properties.padi_produktivitas}
+        </span>
+    </div>
 
-        <hr>
+    <div class="popup-item">
+        <i class="fa-solid fa-wheat-awn"></i>
+        <span>
+            <b>Jagung</b><br>
+            Luas Panen : ${feature.properties.jagung_luas_panen} Ha<br>
+            Produksi : ${feature.properties.jagung_produksi} Ton<br>
+            Produktivitas : ${feature.properties.jagung_produktivitas}
+        </span>
+    </div>
 
-        <b>🫘 Kedelai</b><br>
-        Luas Panen : ${feature.properties.kedelai_luas_panen}<br>
-        Produksi : ${feature.properties.kedelai_produksi}<br>
-        Produktivitas : ${feature.properties.kedelai_produktivitas}
-        <hr>
+    <div class="popup-item">
+        <i class="fa-solid fa-leaf"></i>
+        <span>
+            <b>Kedelai</b><br>
+            Luas Panen : ${feature.properties.kedelai_luas_panen} Ha<br>
+            Produksi : ${feature.properties.kedelai_produksi} Ton<br>
+            Produktivitas : ${feature.properties.kedelai_produktivitas}
+        </span>
+    </div>
 
-        <a href='/map-edit-pertanian/${encodeURIComponent(feature.properties.kecamatan)}'
-        style='display:inline-block;margin-top:5px;padding:6px 8px;background:#ff9800;color:#fff;border-radius:5px;text-decoration:none'>
-        ✏️ Edit Data</a>
+    <div class="popup-actions">
 
-        <br><br>
+        <a href="/map-edit-pertanian/${feature.properties.tahun}/${encodeURIComponent(feature.properties.kecamatan)}"
+           class="btn btn-warning btn-sm">
 
-        <a href='/pertanian/create/${encodeURIComponent(feature.properties.kecamatan)}'
-        style='display:inline-block;padding:6px 8px;background:#28a745;color:#fff;border-radius:5px;text-decoration:none'>
-        ➕ Create Tahun Baru</a>
+            <i class="fa-solid fa-pen"></i>
+            Edit
 
-        <br><br>
+        </a>
 
-    <!-- 🔥 DELETE BUTTON -->
-    <button onclick="hapusData('${feature.properties.tahun}', '${feature.properties.kecamatan}')"
-        style="background:#e74c3c;color:#fff;border:none;padding:6px 10px;border-radius:5px;cursor:pointer">
-        🗑️ Hapus Data
-    </button>
+        <a href="/pertanian/create/${encodeURIComponent(feature.properties.kecamatan)}"
+           class="btn btn-success btn-sm">
 
+            <i class="fa-solid fa-plus"></i>
+            Create
 
-    `;
+        </a>
+
+    </div>
+
+    <div class="popup-actions">
+
+        <button
+            class="btn btn-danger btn-sm w-100"
+            onclick="hapusData('${feature.properties.tahun}','${feature.properties.kecamatan}')">
+
+            <i class="fa-solid fa-trash"></i>
+            Hapus
+
+        </button>
+
+    </div>
+
+</div>
+
+`;
         }
 
         var tahunLayers = {};
@@ -816,7 +1077,7 @@ $.getJSON("{{ route('geojson.kecamatan') }}", function (data) {
     background:#fff;
     padding:4px;
     border-radius:5px;
-    width:110px;
+    width:70px;
     text-align:center;
 ">
     <div style="font-size:9px;font-weight:bold">
@@ -863,7 +1124,7 @@ $.getJSON("{{ route('geojson.kecamatan') }}", function (data) {
     background:#fff;
     padding:4px;
     border-radius:5px;
-    width:110px;
+    width:70px;
     text-align:center;
 ">
     <div style="font-size:9px;font-weight:bold">
@@ -910,7 +1171,7 @@ $.getJSON("{{ route('geojson.kecamatan') }}", function (data) {
     background:#fff;
     padding:4px;
     border-radius:5px;
-    width:110px;
+    width:70px;
     text-align:center;
 ">
     <div style="font-size:9px;font-weight:bold">
@@ -1317,8 +1578,8 @@ $.getJSON("{{ route('geojson.kecamatan') }}", function (data) {
         function simpanLahan() {
 
             console.log(tempGeo);
-console.log($('#nama_pemilik').val());
-console.log($('#kecamatan').val());
+            console.log($('#nama_pemilik').val());
+            console.log($('#kecamatan').val());
 
 
 
@@ -1364,161 +1625,179 @@ console.log($('#kecamatan').val());
 
 
             fetch('/lahan-pertanian', {
-    method: 'POST',
-    headers: {
-        'X-CSRF-TOKEN': '{{ csrf_token() }}'
-    },
-    body: formData
-})
-.then(res => res.json())
-.then(res => {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                    },
+                    body: formData
+                })
+                .then(res => res.json())
+                .then(res => {
 
-    showToastSuccess('Data berhasil disimpan');
+                    showToastSuccess('Data berhasil disimpan');
 
-    setTimeout(() => {
-        location.reload();
-    }, 1200);
+                    setTimeout(() => {
+                        location.reload();
+                    }, 1200);
 
-})
-.catch(error => {
+                })
+                .catch(error => {
 
-    console.error(error);
+                    console.error(error);
 
-    alert('Gagal menyimpan data. Lihat Console (F12)');
+                    alert('Gagal menyimpan data. Lihat Console (F12)');
 
-});
+                });
 
         }
 
         function batalDigitasi() {
 
-    if (lastLayer) {
-        drawnItems.removeLayer(lastLayer);
-    }
+            if (lastLayer) {
+                drawnItems.removeLayer(lastLayer);
+            }
 
-    $('#modalLahan').modal('hide');
+            $('#modalLahan').modal('hide');
 
-    $('#nama_pemilik').val('');
-    $('#kecamatan').val('');
-    $('#komoditas').val('');
-    $('#luas_lahan').val('');
-    $('#image').val('');
+            $('#nama_pemilik').val('');
+            $('#kecamatan').val('');
+            $('#komoditas').val('');
+            $('#luas_lahan').val('');
+            $('#image').val('');
 
-    $('#preview-image')
-        .attr('src','')
-        .hide();
-}
-
-        function previewImage(event){
-
-    let file = event.target.files[0];
-
-    if(!file) return;
-
-    let preview =
-        document.getElementById(
-            'preview-image'
-        );
-
-    preview.src =
-        URL.createObjectURL(file);
-
-    preview.style.display =
-        'block';
-}
-
-function hapusLahan(id){
-
-    if (!window._confirmDelete) {
-    window._confirmDelete = function(msg) {
-        return new Promise(resolve => {
-            let ok = confirm(msg); // sementara tetap confirm
-            resolve(ok);
-        });
-    }
-}
-    fetch('/lahan-pertanian/' + id, {
-        method:'DELETE',
-        headers:{
-            'X-CSRF-TOKEN':'{{ csrf_token() }}'
+            $('#preview-image')
+                .attr('src', '')
+                .hide();
         }
-    })
-    .then(res => res.json())
-    .then(res => {
 
-        const toast = document.createElement('div');
+        function previewImage(event) {
 
-        toast.innerHTML = 'Data berhasil dihapus';
+            let file = event.target.files[0];
 
-        toast.style.position = 'fixed';
-        toast.style.bottom = '20px';
-        toast.style.right = '20px';
-        toast.style.zIndex = '99999';
-        toast.style.background = '#dc3545';
-        toast.style.color = '#fff';
-        toast.style.padding = '10px 16px';
-        toast.style.borderRadius = '8px';
-        toast.style.boxShadow = '0 4px 12px rgba(0,0,0,0.2)';
-        toast.style.fontSize = '14px';
+            if (!file) return;
 
-        document.body.appendChild(toast);
+            let preview =
+                document.getElementById(
+                    'preview-image'
+                );
 
-        setTimeout(() => {
+            preview.src =
+                URL.createObjectURL(file);
 
-            toast.remove();
-
-            // reload halaman peta (tanpa localhost)
-            window.location.reload();
-
-        }, 1500);
-
-    });
-
-}
-
-function showToastSuccess(message) {
-    const toast = document.createElement('div');
-
-    toast.innerHTML = message;
-
-    toast.style.position = 'fixed';
-    toast.style.bottom = '20px';
-    toast.style.right = '20px';
-    toast.style.zIndex = '99999';
-    toast.style.background = '#28a745';
-    toast.style.color = '#fff';
-    toast.style.padding = '10px 16px';
-    toast.style.borderRadius = '8px';
-    toast.style.boxShadow = '0 4px 12px rgba(0,0,0,0.2)';
-    toast.style.fontSize = '14px';
-    toast.style.fontWeight = '500';
-
-    document.body.appendChild(toast);
-
-    setTimeout(() => {
-        toast.remove();
-    }, 1500);
-}
-
-function hapusData(tahun, kecamatan) {
-
-    if (!confirm("Yakin hapus data ini?")) return;
-
-    fetch(`/tabel/${tahun}/${encodeURIComponent(kecamatan)}`, {
-        method: "DELETE",
-        headers: {
-            "X-CSRF-TOKEN": "{{ csrf_token() }}"
+            preview.style.display =
+                'block';
         }
-    })
-    .then(res => res.json())
-    .then(res => {
-        alert("Data berhasil dihapus");
-        location.reload();
-    })
-    .catch(err => {
-        console.error(err);
-        alert("Gagal menghapus data");
-    });
-}
+
+        function hapusLahan(id) {
+
+            if (!window._confirmDelete) {
+                window._confirmDelete = function(msg) {
+                    return new Promise(resolve => {
+                        let ok = confirm(msg); // sementara tetap confirm
+                        resolve(ok);
+                    });
+                }
+            }
+            fetch('/lahan-pertanian/' + id, {
+                    method: 'DELETE',
+                    headers: {
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                    }
+                })
+                .then(res => res.json())
+                .then(res => {
+
+                    const toast = document.createElement('div');
+
+                    toast.innerHTML = 'Data berhasil dihapus';
+
+                    toast.style.position = 'fixed';
+                    toast.style.bottom = '20px';
+                    toast.style.right = '20px';
+                    toast.style.zIndex = '99999';
+                    toast.style.background = '#dc3545';
+                    toast.style.color = '#fff';
+                    toast.style.padding = '10px 16px';
+                    toast.style.borderRadius = '8px';
+                    toast.style.boxShadow = '0 4px 12px rgba(0,0,0,0.2)';
+                    toast.style.fontSize = '14px';
+
+                    document.body.appendChild(toast);
+
+                    setTimeout(() => {
+
+                        toast.remove();
+
+                        // reload halaman peta (tanpa localhost)
+                        window.location.reload();
+
+                    }, 1500);
+
+                });
+
+        }
+
+        function showToastSuccess(message) {
+            const toast = document.createElement('div');
+
+            toast.innerHTML = message;
+
+            toast.style.position = 'fixed';
+            toast.style.bottom = '20px';
+            toast.style.right = '20px';
+            toast.style.zIndex = '99999';
+            toast.style.background = '#28a745';
+            toast.style.color = '#fff';
+            toast.style.padding = '10px 16px';
+            toast.style.borderRadius = '8px';
+            toast.style.boxShadow = '0 4px 12px rgba(0,0,0,0.2)';
+            toast.style.fontSize = '14px';
+            toast.style.fontWeight = '500';
+
+            document.body.appendChild(toast);
+
+            setTimeout(() => {
+                toast.remove();
+            }, 1500);
+        }
+
+        function hapusData(tahun, kecamatan) {
+
+            Swal.fire({
+                title: 'Hapus Data?',
+                text: 'Data yang dihapus tidak dapat dikembalikan',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Ya, Hapus',
+                cancelButtonText: 'Batal'
+            }).then((result) => {
+
+                if (!result.isConfirmed) return;
+
+                fetch(`/tabel/${tahun}/${encodeURIComponent(kecamatan)}`, {
+                        method: "DELETE",
+                        headers: {
+                            "X-CSRF-TOKEN": "{{ csrf_token() }}"
+                        }
+                    })
+                    .then(res => res.json())
+                    .then(res => {
+
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Berhasil',
+                            text: 'Data berhasil dihapus',
+                            timer: 1500,
+                            showConfirmButton: false
+                        });
+
+                        setTimeout(() => {
+                            location.reload();
+                        }, 1500);
+
+                    });
+
+            });
+        }
     </script>
 @endsection

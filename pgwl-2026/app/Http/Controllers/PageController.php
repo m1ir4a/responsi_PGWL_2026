@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\DB;
 
+
 class PageController extends Controller
 {
     public function landingpage()
@@ -30,7 +31,14 @@ class PageController extends Controller
         ->orderBy('tahun', 'desc')
         ->pluck('tahun');
 
-    return view('table', compact('data', 'tahunList'));
+    $lahan = DB::table('lahan_pertanian')->get();
+
+    return view('table', [
+    'title' => 'Tabel Data',
+    'data' => $data,
+    'tahunList' => $tahunList,
+    'lahan' => $lahan
+]);
 }
 
     // =========================
@@ -201,8 +209,31 @@ public function destroy($tahun, $kecamatan)
 
 public function dashboard()
 {
-    return view('dashboard');
+    // total kecamatan dari produksi
+    $totalKecamatan = DB::table('produksi_pertanian')
+        ->distinct('kecamatan')
+        ->count('kecamatan');
+
+    $totalLuas = DB::table('lahan_pertanian')
+    ->select(DB::raw('COALESCE(SUM(luas_lahan),0) as total'))
+    ->value('total');
+
+    // tahun untuk chart
+    $tahunList = DB::table('produksi_pertanian')
+        ->select('tahun')
+        ->distinct()
+        ->orderBy('tahun', 'desc')
+        ->pluck('tahun');
+
+    return view('dashboard', [
+        'title' => 'Grobogan AgroMap',
+        'totalKecamatan' => $totalKecamatan,
+        'totalLuas' => $totalLuas,
+        'tahunList' => $tahunList
+    ]);
 }
+
+
 
 
 

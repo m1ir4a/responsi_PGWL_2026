@@ -156,14 +156,20 @@
         border-radius: 100px;
         border: 1px solid #a7d9b6;
     }
+
+    .chart-container {
+    position: relative;
+    height: 350px; /* sesuaikan */
+    width: 100%;
+}
 </style>
 @endsection
 
 @section('content')
 <div class="dash-hero">
     <div style="position:relative;z-index:1">
-        <h1>🌾 Dashboard WebGIS Pertanian</h1>
-        <p>Kabupaten Grobogan — Sistem Informasi Geografis Produksi Tanaman Pangan</p>
+        <h1>🌾 Grobogan AgroMap</h1>
+        <p>Grobogan AgroMap menyajikan informasi spasial dan statistik pertanian Kabupaten Grobogan dalam bentuk peta interaktif dan grafik. Sistem ini menampilkan data luas panen, produksi, serta produktivitas komoditas utama seperti padi, jagung, dan kedelai pada tingkat kecamatan untuk mendukung analisis dan pengelolaan sektor pertanian.
     </div>
 </div>
 
@@ -171,39 +177,40 @@
 
     {{-- STAT CARDS --}}
     <div class="stat-grid">
-        <div class="stat-card">
-            <div class="stat-icon green"><i class="fa-solid fa-map-location-dot"></i></div>
-            <div>
-                <div class="stat-val">{{ $totalKecamatan ?? '19' }}</div>
-                <div class="stat-lbl">Kecamatan</div>
-            </div>
-        </div>
 
-        <div class="stat-card">
-            <div class="stat-icon amber"><i class="fa-solid fa-calendar-days"></i></div>
-            <div>
-                <div class="stat-val">{{ count($tahunList ?? []) }}</div>
-                <div class="stat-lbl">Tahun Data</div>
-            </div>
+    <div class="stat-card">
+        <div class="stat-icon green">
+            <i class="fa-solid fa-map-location-dot"></i>
         </div>
-
-        <div class="stat-card">
-            <div class="stat-icon blue"><i class="fa-solid fa-seedling"></i></div>
-            <div>
-                <div class="stat-val">3</div>
-                <div class="stat-lbl">Komoditas</div>
-            </div>
-        </div>
-
-        <div class="stat-card">
-            <div class="stat-icon purple"><i class="fa-solid fa-database"></i></div>
-            <div>
-                <div class="stat-val">{{ $totalRecord ?? '—' }}</div>
-                <div class="stat-lbl">Total Record</div>
-            </div>
+        <div>
+            <div class="stat-val">{{ $totalKecamatan ?? '19' }}</div>
+            <div class="stat-lbl">Kecamatan</div>
         </div>
     </div>
 
+    <div class="stat-card">
+        <div class="stat-icon amber">
+            <i class="fa-solid fa-seedling"></i>
+        </div>
+        <div>
+            <div class="stat-val">3</div>
+            <div class="stat-lbl">Komoditas</div>
+        </div>
+    </div>
+
+    <div class="stat-card">
+        <div class="stat-icon blue">
+            <i class="fa-solid fa-layer-group"></i>
+        </div>
+        <div>
+            <div class="stat-val">
+                {{ number_format($totalLuas ?? 0, 2) }}
+            </div>
+            <div class="stat-lbl">Total Luas Lahan (Ha)</div>
+        </div>
+    </div>
+
+</div>
     {{-- CHARTS --}}
     <div class="chart-wrap">
         <div class="section-title"><i class="fa-solid fa-chart-bar" style="color:#1a7d3b"></i> Produksi Per Tahun</div>
@@ -216,7 +223,9 @@
             @endforeach
         </div>
 
-        <canvas id="dashChart" height="90"></canvas>
+        <div class="chart-container">
+    <canvas id="dashChart"></canvas>
+</div>
         <p id="chartEmpty" class="text-center text-muted mt-3" style="font-size:.85rem;display:none">
             Pilih tahun di atas untuk menampilkan grafik
         </p>
@@ -251,61 +260,115 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
 <script>
 let dashChartObj = null;
-const kecamatanColors = { padi: '#1a7d3b', jagung: '#f59e0b', kedelai: '#1565c0' };
 
 function loadChartDashboard(tahun, btn) {
-    // highlight button
-    document.querySelectorAll('.tahun-btn').forEach(b => b.style.background = '');
-    if(btn) btn.style.background = '#1a7d3b', btn.style.color = '#fff';
+
+    // reset highlight button
+    document.querySelectorAll('.tahun-btn').forEach(b => {
+        b.style.background = '';
+        b.style.color = '#1a7d3b';
+    });
+
+    if (btn) {
+        btn.style.background = '#1a7d3b';
+        btn.style.color = '#fff';
+    }
 
     fetch('/geojson-kecamatan-tahun/' + tahun)
-    .then(r => r.json())
-    .then(data => {
-        const features = data.features;
-        const labels = features.map(f => f.properties.kecamatan);
-        const padi    = features.map(f => parseFloat(f.properties.padi_produksi) || 0);
-        const jagung  = features.map(f => parseFloat(f.properties.jagung_produksi) || 0);
-        const kedelai = features.map(f => parseFloat(f.properties.kedelai_produksi) || 0);
+        .then(r => r.json())
+        .then(data => {
 
-        const ctx = document.getElementById('dashChart').getContext('2d');
+            const features = data.features || [];
 
-        if(dashChartObj) dashChartObj.destroy();
-
-        document.getElementById('chartEmpty').style.display = 'none';
-
-        dashChartObj = new Chart(ctx, {
-            type: 'bar',
-            data: {
-                labels,
-                datasets: [
-                    { label: '🌾 Padi (ton)',    data: padi,    backgroundColor: 'rgba(26,125,59,.75)',   borderRadius: 4 },
-                    { label: '🌽 Jagung (ton)',   data: jagung,  backgroundColor: 'rgba(245,158,11,.75)',  borderRadius: 4 },
-                    { label: '🫘 Kedelai (ton)',  data: kedelai, backgroundColor: 'rgba(21,101,192,.75)',  borderRadius: 4 },
-                ]
-            },
-            options: {
-                responsive: true,
-                plugins: {
-                    legend: { position: 'top', labels: { font: { size: 11 }, padding: 16 } },
-                    tooltip: { mode: 'index', intersect: false }
-                },
-                scales: {
-                    x: { stacked: false, grid: { display: false }, ticks: { font: { size: 9 }, maxRotation: 45 } },
-                    y: { grid: { color: '#f0f0f0' }, ticks: { font: { size: 10 } } }
-                }
+            if (features.length === 0) {
+                document.getElementById('chartEmpty').style.display = 'block';
+                return;
             }
+
+            document.getElementById('chartEmpty').style.display = 'none';
+
+            const labels = features.map(f => f.properties.kecamatan);
+
+            const padi = features.map(f =>
+                Number(f.properties.padi_produksi ?? 0)
+            );
+
+            const jagung = features.map(f =>
+                Number(f.properties.jagung_produksi ?? 0)
+            );
+
+            const kedelai = features.map(f =>
+                Number(f.properties.kedelai_produksi ?? 0)
+            );
+
+            const ctx = document.getElementById('dashChart');
+
+            if (dashChartObj) dashChartObj.destroy();
+
+            dashChartObj = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: labels,
+                    datasets: [
+                        {
+                            label: '🌾 Padi',
+                            data: padi,
+                            backgroundColor: '#1a7d3b'
+                        },
+                        {
+                            label: '🌽 Jagung',
+                            data: jagung,
+                            backgroundColor: '#f59e0b'
+                        },
+                        {
+                            label: '🫘 Kedelai',
+                            data: kedelai,
+                            backgroundColor: '#1565c0'
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'top'
+                        },
+                        tooltip: {
+                            mode: 'index',
+                            intersect: false
+                        }
+                    },
+                    scales: {
+                        x: {
+                            grid: { display: false }
+                        },
+                        y: {
+                            beginAtZero: true,
+                            grid: {
+                                color: '#eee'
+                            }
+                        }
+                    }
+                }
+            });
         });
-    });
 }
 
-// Auto-load latest year
+
+// AUTO LOAD TAHUN TERBARU
 @if(count($tahunList ?? []) > 0)
-    window.addEventListener('DOMContentLoaded', function(){
-        const btns = document.querySelectorAll('.tahun-btn');
-        if(btns.length) loadChartDashboard({{ end($tahunList) }}, btns[btns.length-1]);
-    });
+window.addEventListener('DOMContentLoaded', function () {
+    const btns = document.querySelectorAll('.tahun-btn');
+
+    if (btns.length > 0) {
+        const lastBtn = btns[btns.length - 1] || btns[0]; // karena sudah desc di controller
+        loadChartDashboard(lastBtn.dataset.tahun, lastBtn);
+    }
+});
 @else
-    document.getElementById('chartEmpty').style.display = 'block';
+document.getElementById('chartEmpty').style.display = 'block';
 @endif
+
 </script>
 @endsection

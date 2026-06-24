@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\LahanPertanian;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\DB;
 
 class LahanPertanianController extends Controller
 {
@@ -189,6 +190,21 @@ public function destroy($id)
     return response()->json([
         'status' => 'success'
     ]);
+}
+
+public function tabel()
+{
+    $data = DB::table('produksi_pertanian')->get();
+    $tahunList = DB::table('produksi_pertanian')
+        ->select('tahun')
+        ->distinct()
+        ->orderBy('tahun', 'desc')
+        ->pluck('tahun');
+
+    // 🔥 TAMBAHKAN INI
+    $lahan = DB::table('lahan_pertanian')->get();
+
+    return view('table', compact('data', 'tahunList', 'lahan'));
 }
 
 }

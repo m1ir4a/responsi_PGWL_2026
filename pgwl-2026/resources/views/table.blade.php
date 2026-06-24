@@ -139,6 +139,73 @@ h3 {
 
 </div>
 
+<div class="container mt-4">
+
+    <div class="card mt-4">
+        <div class="card-header bg-primary text-white">
+            <h3>Data Lahan Pertanian (Hasil Digitasi)</h3>
+        </div>
+
+        <div class="card-body">
+
+            <div class="table-responsive">
+
+                <table class="table table-bordered table-striped" id="tabelLahan">
+
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Nama Pemilik</th>
+                            <th>Kecamatan</th>
+                            <th>Komoditas</th>
+                            <th>Luas Lahan (Ha)</th>
+                            <th>Gambar</th>
+                            <th>Aksi</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        @forelse($lahan as $row)
+                            <tr>
+                                <td>{{ $row->id }}</td>
+                                <td>{{ $row->nama_pemilik }}</td>
+                                <td>{{ $row->kecamatan }}</td>
+                                <td>{{ $row->komoditas }}</td>
+                                <td>{{ $row->luas_lahan }}</td>
+
+                                <td>
+                                    @if($row->image)
+                                        <img src="{{ asset('storage/images/'.$row->image) }}"
+                                             width="60"
+                                             style="border-radius:6px;">
+                                    @else
+                                        -
+                                    @endif
+                                </td>
+
+                                <td>
+                                    <button class="btn btn-danger btn-sm"
+                                        onclick="hapusLahan({{ $row->id }})">
+                                        Hapus
+                                    </button>
+                                </td>
+                            </tr>
+                        @empty
+                            <tr>
+                                <td colspan="7">Tidak ada data lahan</td>
+                            </tr>
+                        @endforelse
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
 @endsection
 
 
